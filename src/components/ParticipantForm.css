@@ -1,0 +1,149 @@
+.participant-form {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.participant-form h4 {
+  margin: 0;
+  color: #374151;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 8px;
+}
+
+.form-group-small {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group-small label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group-small input[type="text"],
+.form-group-small input[type="email"],
+.form-group-small input[type="tel"],
+.form-group-small select {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.form-group-small input[type="text"]:focus,
+.form-group-small input[type="email"]:focus,
+.form-group-small input[type="tel"]:focus,
+.form-group-small select:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: white;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.form-group-small input.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.form-group-small input.input-error:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"],
+.radio-label input[type="radio"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #667eea;
+}
+
+.radio-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: 0;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.form-buttons-small {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.btn-small {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-submit {
+  background: #667eea;
+  color: white;
+}
+
+.btn-submit:hover {
+  background: #764ba2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}

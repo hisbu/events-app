@@ -1,0 +1,48 @@
+.event-list {
+  width: 100%;
+}
+
+.event-list-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #667eea;
+}
+
+.event-list-header h2 {
+  color: #1f2937;
+  font-size: 1.5rem;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.empty-list-message {
+  text-align: center;
+  padding: 40px;
+  background: #f9fafb;
+  border-radius: 8px;
+  color: #9ca3af;
+}
+
+.empty-list-message p {
+  font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .events-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .event-list-header h2 {
+    font-size: 1.2rem;
+  }
+}
