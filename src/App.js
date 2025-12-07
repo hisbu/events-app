@@ -115,7 +115,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>📅 Event Scheduler</h1>
+        <h1>📅 It'ts Event Scheduler</h1>
         <p>Kelola dan jadwalkan acara Anda dengan mudah</p>
       </header>
 
