@@ -55,7 +55,7 @@ jobs:
               --restart unless-stopped \
               ${{ secrets.DOCKER_USERNAME }}/event-apps:latest
 
-            sudo docker network connect npm-networks || true
+            sudo docker network connect npm-networks event-apps|| true
 
             # Logout (opsional)
             sudo docker logout
