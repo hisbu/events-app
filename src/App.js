@@ -200,6 +200,12 @@ function App() {
           )}
         </main>
       </div>
+      <footer className="app-footer">
+        <div className="footer-inner">
+          <span>© 2026 It'ts Event Scheduler</span>
+          <span>Created by • <a href="https://hisbuilds.com" target="_blank" rel="noreferrer">Hisbu</a></span>
+        </div>
+      </footer>
     </div>
   );
 }
