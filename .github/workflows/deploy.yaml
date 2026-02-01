@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          cd events-app
+          echo "REACT_APP_WEATHER_API_KEY=${{ secrets.REACT_APP_WEATHER_API_KEY }}" > .env.local
+          echo "REACT_APP_ENV=production" >> .env.local
+
       # 1. Build & Push Docker Image
       - name: Log in to Docker Hub
         uses: docker/login-action@v3

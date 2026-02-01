@@ -1,39 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EventForm from './components/EventForm';
 import EventList from './components/EventList';
 import Statistics from './components/Statistics';
+import Weather from './components/Weather';
 import './App.css';
 
 function App() {
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      name: 'Workshop React',
-      date: '2025-12-15',
-      time: '09:00',
-      category: 'Workshop',
-      location: 'Ruang A',
-      description: 'Belajar React dari dasar hingga mahir',
-      maxParticipants: 30,
-      participants: [
-        { id: 1, name: 'Budi', email: 'budi@example.com' },
-        { id: 2, name: 'Siti', email: 'siti@example.com' }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Seminar Web Development',
-      date: '2025-12-20',
-      time: '14:00',
-      category: 'Seminar',
-      location: 'Auditorium',
-      description: 'Tren terbaru dalam web development',
-      maxParticipants: 100,
-      participants: [
-        { id: 3, name: 'Ahmad', email: 'ahmad@example.com' }
-      ]
+  const [events, setEvents] = useState(() => {
+    try {
+      const saved = localStorage.getItem('events');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Failed to parse saved events from localStorage', e);
     }
-  ]);
+
+    return [
+      {
+        id: 1,
+        name: 'Workshop React',
+        date: '2025-12-15',
+        time: '09:00',
+        category: 'Workshop',
+        location: 'Ruang A',
+        description: 'Belajar React dari dasar hingga mahir',
+        maxParticipants: 30,
+        participants: [
+          { id: 1, name: 'Budi', email: 'budi@example.com' },
+          { id: 2, name: 'Santi', email: 'santi@example.com' }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Seminar Web Development',
+        date: '2025-12-20',
+        time: '14:00',
+        category: 'Seminar',
+        location: 'Auditorium',
+        description: 'Tren terbaru dalam web development',
+        maxParticipants: 100,
+        participants: [
+          { id: 3, name: 'Ahmad', email: 'ahmad@example.com' }
+        ]
+      }
+    ];
+  });
+
+  // Persist events to localStorage on change
+  useEffect(() => {
+    try {
+      localStorage.setItem('events', JSON.stringify(events));
+    } catch (e) {
+      console.warn('Failed to save events to localStorage', e);
+    }
+  }, [events]);
 
   const [editingEventId, setEditingEventId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -128,6 +147,7 @@ function App() {
 
       <div className="app-content">
         <aside className="sidebar">
+          <Weather />
           <EventForm
             onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}
             initialData={editingEvent}
