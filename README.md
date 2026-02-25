@@ -1,4 +1,4 @@
-# Event Scheduler Application
+# Event Scheduler Application using react
 
 Aplikasi Event Scheduler yang dibangun menggunakan **React** untuk mengelola dan menjadwalkan acara dengan mudah.
 
