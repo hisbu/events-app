@@ -30,6 +30,15 @@ pipeline:
                       type: branch
                       spec:
                         branch: main
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: dockerhubhisbu
+                    repo: test-events
+                    tags:
+                      - 1.1.1
           platform:
             os: Linux
             arch: Amd64
