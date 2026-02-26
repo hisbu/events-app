@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_events_app_1772088343879-pr-trigger-input-set
+  identifier: Build_events_app_1772088343879prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: lab2
+  pipeline:
+    identifier: Build_events_app_1772088343879
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
