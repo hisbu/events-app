@@ -31,6 +31,20 @@ pipeline:
                       spec:
                         branch: main
               - step:
+                  type: Run
+                  name: install dependencies
+                  identifier: install_dependencies
+                  spec:
+                    shell: Bash
+                    command: cd events-app && npm install
+              - step:
+                  type: Run
+                  name: run build
+                  identifier: run_build
+                  spec:
+                    shell: Bash
+                    command: cd events-app && npm run build
+              - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry_1
                   identifier: BuildAndPushDockerRegistry_1
