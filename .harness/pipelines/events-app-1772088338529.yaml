@@ -50,7 +50,7 @@ pipeline:
                   identifier: BuildAndPushDockerRegistry_1
                   spec:
                     connectorRef: dockerhubhisbu
-                    repo: test-events
+                    repo: hisbu/test-events
                     tags:
                       - 1.1.1
           platform:
