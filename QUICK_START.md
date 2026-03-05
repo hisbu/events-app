@@ -1,4 +1,4 @@
-# 🚀 Quick Start Guide
+# 🚀 Quick Start Guide.
 
 ## Persyaratan Sistem
 - Node.js (v14 atau lebih tinggi)
