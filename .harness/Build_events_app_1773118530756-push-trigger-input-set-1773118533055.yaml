@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_events_app_1773118530756-push-trigger-input-set
+  identifier: Build_events_app_1773118530756pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: lab2
+  pipeline:
+    identifier: Build_events_app_1773118530756
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
