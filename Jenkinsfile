@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME        = 'test-events'
-        DOCKER_REGISTRY = 'https://registry-1.docker.io'          // Ganti dengan registry kamu
-        IMAGE_NAME      = "${DOCKER_REGISTRY}/${APP_NAME}"
-        IMAGE_TAG       = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
-        DOCKER_CREDS    = credentials('docker-registry-creds')  // ID credentials di Jenkins
-        NODE_VERSION    = '18'
+        APP_NAME            = 'test-events'
+        DOCKER_REGISTRY_URL = 'https://index.docker.io/v1/'    // Docker Hub login URL (jangan diubah)
+        DOCKER_HUB_USER     = 'hisbu'                           // Username Docker Hub kamu
+        IMAGE_NAME          = "${DOCKER_HUB_USER}/${APP_NAME}"  // Format Docker Hub: username/image-name
+        IMAGE_TAG           = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        NODE_VERSION        = '18'
     }
 
     tools {
