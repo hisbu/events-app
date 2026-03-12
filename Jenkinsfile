@@ -3,15 +3,15 @@ pipeline {
 
     environment {
         APP_NAME            = 'test-events'
-        DOCKER_REGISTRY_URL = 'https://index.docker.io/v1/'    // Docker Hub login URL (jangan diubah)
-        DOCKER_HUB_USER     = 'hisbu'                           // Username Docker Hub kamu
-        IMAGE_NAME          = "${DOCKER_HUB_USER}/${APP_NAME}"  // Format Docker Hub: username/image-name
+        DOCKER_REGISTRY_URL = 'https://index.docker.io/v1/'
+        DOCKER_HUB_USER     = 'hisbu'
+        IMAGE_NAME          = 'hisbu/event-scheduler'
         IMAGE_TAG           = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
         NODE_VERSION        = '18'
     }
 
     tools {
-        nodejs "NodeJS-${NODE_VERSION}"   // Harus sudah dikonfigurasi di Jenkins → Global Tools
+        nodejs "NodeJS-${NODE_VERSION}"
     }
 
     options {
@@ -28,11 +28,11 @@ pipeline {
         // ─────────────────────────────────────────────
         stage('Checkout') {
             steps {
-                echo "========== Checkout Source Code =========="
+                echo '========== Checkout Source Code =========='
                 checkout scm
                 script {
                     env.GIT_COMMIT_SHORT = sh(
-                        script: "git rev-parse --short HEAD",
+                        script: 'git rev-parse --short HEAD',
                         returnStdout: true
                     ).trim()
                     echo "Commit: ${env.GIT_COMMIT_SHORT}"
@@ -45,22 +45,21 @@ pipeline {
         // ─────────────────────────────────────────────
         stage('Install Dependencies') {
             steps {
-                echo "========== Installing Dependencies =========="
+                echo '========== Installing Dependencies =========='
                 sh '''
                     node --version
                     npm --version
-                    npm install
                     npm ci --prefer-offline
                 '''
             }
         }
 
         // ─────────────────────────────────────────────
-        // Stage 3: Lint (opsional, pakai ESLint bawaan CRA)
+        // Stage 3: Lint
         // ─────────────────────────────────────────────
         stage('Lint') {
             steps {
-                echo "========== Running ESLint =========="
+                echo '========== Running ESLint =========='
                 sh 'npx eslint src/ --ext .js,.jsx --max-warnings=0 || true'
             }
         }
@@ -70,7 +69,7 @@ pipeline {
         // ─────────────────────────────────────────────
         // stage('Test') {
         //     steps {
-        //         echo "========== Running Unit Tests =========="
+        //         echo '========== Running Unit Tests =========='
         //         sh '''
         //             CI=true npm test -- \
         //                 --coverage \
@@ -81,7 +80,6 @@ pipeline {
         //     }
         //     post {
         //         always {
-        //             // Publish coverage report jika tersedia
         //             publishHTML(target: [
         //                 allowMissing         : true,
         //                 alwaysLinkToLastBuild: true,
@@ -99,12 +97,12 @@ pipeline {
         // ─────────────────────────────────────────────
         stage('Build React App') {
             steps {
-                echo "========== Building React App =========="
+                echo '========== Building React App =========='
                 sh 'CI=false npm run build'
             }
             post {
                 success {
-                    echo "React build artifact tersedia di folder: build/"
+                    echo 'React build artifact tersedia di folder: build/'
                 }
             }
         }
@@ -114,18 +112,15 @@ pipeline {
         // ─────────────────────────────────────────────
         stage('Build Docker Image') {
             steps {
-                echo "========== Building Docker Image =========="
+                echo '========== Building Docker Image =========='
                 script {
                     docker.build(
-                        "${IMAGE_NAME}:${IMAGE_TAG}",
-                        "--label git-commit=${env.GIT_COMMIT_SHORT} \
-                         --label build-date=\$(date -u +%Y-%m-%dT%H:%M:%SZ) \
-                         --no-cache ."
+                        "${env.IMAGE_NAME}:${env.IMAGE_TAG}",
+                        "--label git-commit=${env.GIT_COMMIT_SHORT} --no-cache ."
                     )
 
-                    // Juga tag sebagai 'latest' jika branch main/master
                     if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master') {
-                        sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
+                        sh "docker tag ${env.IMAGE_NAME}:${env.IMAGE_TAG} ${env.IMAGE_NAME}:latest"
                     }
                 }
             }
@@ -136,13 +131,13 @@ pipeline {
         // ─────────────────────────────────────────────
         stage('Push Docker Image') {
             steps {
-                echo "========== Pushing Docker Image to Registry =========="
+                echo '========== Pushing Docker Image to Registry =========='
                 script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'docker-registry-creds') {
-                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
+                    docker.withRegistry(env.DOCKER_REGISTRY_URL, 'docker-registry-creds') {
+                        docker.image("${env.IMAGE_NAME}:${env.IMAGE_TAG}").push()
 
                         if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master') {
-                            docker.image("${IMAGE_NAME}:latest").push()
+                            docker.image("${env.IMAGE_NAME}:latest").push()
                             echo "Tag 'latest' juga di-push karena branch: ${env.BRANCH_NAME}"
                         }
                     }
@@ -154,21 +149,20 @@ pipeline {
         // Stage 8: Deploy (opsional, uncomment jika perlu)
         // ─────────────────────────────────────────────
         // stage('Deploy to Staging') {
-        //     when {
-        //         branch 'main'
-        //     }
+        //     when { branch 'main' }
         //     steps {
-        //         echo "========== Deploying to Staging =========="
-        //         sh """
-        //             docker pull ${IMAGE_NAME}:${IMAGE_TAG}
-        //             docker stop ${APP_NAME} || true
-        //             docker rm   ${APP_NAME} || true
-        //             docker run -d \
-        //                 --name ${APP_NAME} \
-        //                 -p 3000:3000 \
-        //                 --restart unless-stopped \
-        //                 ${IMAGE_NAME}:${IMAGE_TAG}
-        //         """
+        //         script {
+        //             sh """
+        //                 docker pull ${env.IMAGE_NAME}:${env.IMAGE_TAG}
+        //                 docker stop ${env.APP_NAME} || true
+        //                 docker rm   ${env.APP_NAME} || true
+        //                 docker run -d \
+        //                     --name ${env.APP_NAME} \
+        //                     -p 3000:3000 \
+        //                     --restart unless-stopped \
+        //                     ${env.IMAGE_NAME}:${env.IMAGE_TAG}
+        //             """
+        //         }
         //     }
         // }
 
@@ -179,34 +173,21 @@ pipeline {
     // ─────────────────────────────────────────────────
     post {
         always {
-            echo "========== Cleaning Up =========="
-            // Hapus image lokal agar tidak memenuhi disk
+            echo '========== Cleaning Up =========='
             sh """
-                docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true
-                docker rmi ${IMAGE_NAME}:latest       || true
+                docker rmi ${env.IMAGE_NAME}:${env.IMAGE_TAG} || true
+                docker rmi ${env.IMAGE_NAME}:latest           || true
             """
             cleanWs()
         }
         success {
-            echo """
-            ✅ Pipeline BERHASIL
-            App      : ${APP_NAME}
-            Image    : ${IMAGE_NAME}:${IMAGE_TAG}
-            Branch   : ${env.BRANCH_NAME}
-            Commit   : ${env.GIT_COMMIT_SHORT}
-            Build No : ${env.BUILD_NUMBER}
-            """
+            echo "✅ Pipeline BERHASIL | App: ${env.IMAGE_NAME}:${env.IMAGE_TAG} | Branch: ${env.BRANCH_NAME} | Commit: ${env.GIT_COMMIT_SHORT} | Build: #${env.BUILD_NUMBER}"
         }
         failure {
-            echo """
-            ❌ Pipeline GAGAL
-            Branch   : ${env.BRANCH_NAME}
-            Build No : ${env.BUILD_NUMBER}
-            Silakan cek log di: ${env.BUILD_URL}
-            """
-            // Uncomment untuk notifikasi Slack / email:
+            echo "❌ Pipeline GAGAL | Branch: ${env.BRANCH_NAME} | Build: #${env.BUILD_NUMBER} | Log: ${env.BUILD_URL}"
+            // Uncomment untuk notifikasi Slack:
             // slackSend channel: '#ci-cd', color: 'danger',
-            //     message: "Build FAILED: ${APP_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            //     message: "Build FAILED: ${env.APP_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
         }
         unstable {
             echo "⚠️ Pipeline UNSTABLE — ada test yang gagal, periksa laporan test."
