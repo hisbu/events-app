@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME            = 'test-events'
+        APP_NAME            = 'event-scheduler'
         DOCKER_REGISTRY_URL = 'https://index.docker.io/v1/'
         DOCKER_HUB_USER     = 'hisbu'
         IMAGE_NAME          = 'hisbu/event-scheduler'
-        IMAGE_TAG           = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        IMAGE_TAG           = "${env.BUILD_NUMBER}"
         NODE_VERSION        = '18'
     }
 
