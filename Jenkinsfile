@@ -100,7 +100,7 @@ pipeline {
         stage('Build React App') {
             steps {
                 echo "========== Building React App =========="
-                sh 'npm run build'
+                sh 'CI=false npm run build'
             }
             post {
                 success {
