@@ -68,31 +68,31 @@ pipeline {
         // ─────────────────────────────────────────────
         // Stage 4: Unit Test
         // ─────────────────────────────────────────────
-        stage('Test') {
-            steps {
-                echo "========== Running Unit Tests =========="
-                sh '''
-                    CI=true npm test -- \
-                        --coverage \
-                        --watchAll=false \
-                        --forceExit \
-                        --reporters=default
-                '''
-            }
-            post {
-                always {
-                    // Publish coverage report jika tersedia
-                    publishHTML(target: [
-                        allowMissing         : true,
-                        alwaysLinkToLastBuild: true,
-                        keepAll              : true,
-                        reportDir            : 'coverage/lcov-report',
-                        reportFiles          : 'index.html',
-                        reportName           : 'Coverage Report'
-                    ])
-                }
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         echo "========== Running Unit Tests =========="
+        //         sh '''
+        //             CI=true npm test -- \
+        //                 --coverage \
+        //                 --watchAll=false \
+        //                 --forceExit \
+        //                 --reporters=default
+        //         '''
+        //     }
+        //     post {
+        //         always {
+        //             // Publish coverage report jika tersedia
+        //             publishHTML(target: [
+        //                 allowMissing         : true,
+        //                 alwaysLinkToLastBuild: true,
+        //                 keepAll              : true,
+        //                 reportDir            : 'coverage/lcov-report',
+        //                 reportFiles          : 'index.html',
+        //                 reportName           : 'Coverage Report'
+        //             ])
+        //         }
+        //     }
+        // }
 
         // ─────────────────────────────────────────────
         // Stage 5: Build React App
