@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME        = 'event-scheduler'
-        DOCKER_REGISTRY = 'your-registry.example.com'          // Ganti dengan registry kamu
+        APP_NAME        = 'test-events'
+        DOCKER_REGISTRY = 'https://registry-1.docker.io'          // Ganti dengan registry kamu
         IMAGE_NAME      = "${DOCKER_REGISTRY}/${APP_NAME}"
         IMAGE_TAG       = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
         DOCKER_CREDS    = credentials('docker-registry-creds')  // ID credentials di Jenkins
