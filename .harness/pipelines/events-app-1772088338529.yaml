@@ -31,6 +31,26 @@ pipeline:
                       spec:
                         branch: main
               - step:
+                  type: Sonarqube
+                  name: Sonarqube
+                  identifier: Sonarqube
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                    auth:
+                      access_token: sqa_ecca5b2d9666418620e033209e2a83a1f549d4e7
+                      domain: https://sonardev.takasecure.io
+                      ssl: true
+                    tool:
+                      project_key: test-event-apps
+                contextType: Pipeline
+              - step:
                   type: Run
                   name: install dependencies
                   identifier: install_dependencies
