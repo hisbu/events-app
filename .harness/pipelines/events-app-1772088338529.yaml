@@ -44,7 +44,7 @@ pipeline:
                       log:
                         level: info
                     auth:
-                      access_token: sqa_ecca5b2d9666418620e033209e2a83a1f549d4e7
+                      access_token: <+input>
                       domain: https://sonardev.takasecure.io
                       ssl: true
                     tool:
